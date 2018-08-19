@@ -24,5 +24,11 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Models\Game::class, function (Faker\Generator $faker) {
+    return [
+        'deck_id' => function () { return factory(App\Models\Deck::class)->create()->id; },
+    ];
+});
+
+$factory->define(App\Models\Deck::class, function (Faker\Generator $faker) {
     return [];
 });
