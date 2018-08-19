@@ -25,6 +25,42 @@ class DealerTest extends \Tests\TestCase
         $this->assertCount(51, $game->deck->cards);
     }
 
+    /**
+     * The dealer should stand when the minimum value of the hand is greater 
+     * than 16.
+     */
+    public function testDealerShouldStand()
+    {
+        $game = factory(Game::class)->create();
+        $dealer = new Dealer($game);
+
+        $this->assertFalse($dealer->dealerShouldStand());
+
+        // values [2]
+        $game->dealer_hand = ['2H'];
+        $this->assertFalse($dealer->dealerShouldStand());
+
+        // values [16]
+        $game->dealer_hand = ['4H', '4D', '4S', '4C'];
+        $this->assertFalse($dealer->dealerShouldStand());
+
+        // values [17]
+        $game->dealer_hand = ['4H', '4D', '4S', '5C'];
+        $this->assertTrue($dealer->dealerShouldStand());
+
+        // values [1, 11]
+        $game->dealer_hand = ['AH'];
+        $this->assertFalse($dealer->dealerShouldStand());
+
+        // values [2, 12, 12, 22]
+        $game->dealer_hand = ['AH', 'AD'];
+        $this->assertFalse($dealer->dealerShouldStand());
+
+        // values [17, 27]
+        $game->dealer_hand = ['4H', '4D', '4S', '4C', 'AD'];
+        $this->assertTrue($dealer->dealerShouldStand());
+    }
+
     public function testHitDealerOrStand_Hit()
     {
         $game = factory(Game::class)->create();
@@ -42,15 +78,14 @@ class DealerTest extends \Tests\TestCase
      */
     public function testHitDealerOrStand_Stand()
     {
-        $this->markTestIncomplete();
         $game = factory(Game::class)->create();
-        $game->dealer_hand = ['QH', 'KH'];
+        $game->dealer_hand = ['4H', '4D', '4S', '5C'];
         $dealer = new Dealer($game);
 
-        $this->assertCount(2, $game->dealer_hand);
+        $this->assertCount(4, $game->dealer_hand);
         $this->assertCount(52, $game->deck->cards);
         $dealer->hitDealerOrStand();
-        $this->assertCount(2, $game->dealer_hand);
+        $this->assertCount(4, $game->dealer_hand);
         $this->assertCount(52, $game->deck->cards);
     }
 }
