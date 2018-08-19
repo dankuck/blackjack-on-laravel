@@ -28,4 +28,9 @@ class Deck extends Model
             $deck->cards = collect($cards)->shuffle();
         });
     }
+
+    public function getCardCountAttribute()
+    {
+        return count($this->cards);
+    }
 }

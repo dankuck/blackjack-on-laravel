@@ -26,4 +26,12 @@ class DeckTest extends \Tests\TestCase
         $this->assertNotEquals($deck1->cards, $deck2->cards);
     }
 
+    public function testRemainingCardCount()
+    {
+        $deck = Deck::create(['game_id' => 0]);
+        $this->assertEquals(52, $deck->card_count);
+
+        $deck->cards = array_slice($deck->cards, 0, 13);
+        $this->assertEquals(13, $deck->card_count);
+    }
 }

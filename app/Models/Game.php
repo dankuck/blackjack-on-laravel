@@ -14,6 +14,6 @@ class Game extends Model
 
     public function deck()
     {
-        return $this->hasOne(Deck::class);
+        return $this->belongsTo(Deck::class);
     }
 }

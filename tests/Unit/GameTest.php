@@ -9,14 +9,13 @@ class GameTest extends \Tests\TestCase
 {
     public function testExists()
     {
-        $game = Game::create();
-        $this->assertNotNull($game);
+        new Game();
     }
 
     public function testDeck()
     {
-        $game = Game::create();
-        $deck = factory(Deck::class)->create(['game_id' => $game->id]);
+        $deck = factory(Deck::class)->create();
+        $game = factory(Game::class)->create(['deck_id' => $deck->id]);
         $this->assertEquals($deck->id, $game->deck->id);
     }
 }

@@ -11,6 +11,7 @@ class GameControllerTest extends \Tests\TestCase
     {
         $game = factory(Game::class)->create();
 
+        echo $this->get("/game/{$game->id}")->getContent();
         $this->get("/game/{$game->id}")
             ->assertStatus(200)
             ->assertViewHas('game');
