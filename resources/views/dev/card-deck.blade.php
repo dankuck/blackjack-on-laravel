@@ -7,5 +7,6 @@
             <card card="{{ $face }}{{ $suit }}"></card>
         @endforeach
     @endforeach
+    <card card="BACK"></card>
 
 @endsection
