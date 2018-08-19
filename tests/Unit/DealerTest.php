@@ -88,4 +88,45 @@ class DealerTest extends \Tests\TestCase
         $this->assertCount(4, $game->dealer_hand);
         $this->assertCount(52, $game->deck->cards);
     }
+
+    public function testHitDealerUntilStand_JustOne()
+    {
+        $game = factory(Game::class)->create();
+        $game->dealer_hand = ['4H', '4D', '4S', '4C'];
+        $dealer = new Dealer($game);
+
+        $this->assertCount(4, $game->dealer_hand);
+        $this->assertCount(52, $game->deck->cards);
+        $dealer->hitDealerUntilStand();
+        $this->assertCount(5, $game->dealer_hand);
+        $this->assertCount(51, $game->deck->cards);
+    }
+
+    public function testHitDealerUntilStand_ExactlyTwo()
+    {
+        $game = factory(Game::class)->create();
+        $game->deck->cards = ['JH', 'JD', 'JS', 'JC'];
+        $game->dealer_hand = [];
+        $dealer = new Dealer($game);
+
+        $this->assertCount(0, $game->dealer_hand);
+        $this->assertCount(4, $game->deck->cards);
+        $dealer->hitDealerUntilStand();
+        $this->assertCount(2, $game->dealer_hand);
+        $this->assertCount(2, $game->deck->cards);
+    }
+
+    public function testHitDealerUntilStand_NoMore()
+    {
+        $game = factory(Game::class)->create();
+        $game->deck->cards = [];
+        $game->dealer_hand = [];
+        $dealer = new Dealer($game);
+
+        $this->assertCount(0, $game->dealer_hand);
+        $this->assertCount(0, $game->deck->cards);
+        $dealer->hitDealerUntilStand();
+        $this->assertCount(0, $game->dealer_hand);
+        $this->assertCount(0, $game->deck->cards);
+    }
 }

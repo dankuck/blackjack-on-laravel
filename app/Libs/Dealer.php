@@ -43,4 +43,11 @@ class Dealer
         $this->game->save();
         $this->game->deck->save();
     }
+
+    public function hitDealerUntilStand()
+    {
+        while (!$this->dealerShouldStand() && !$this->game->deck->done()) {
+            $this->hitDealer();
+        }
+    }
 }

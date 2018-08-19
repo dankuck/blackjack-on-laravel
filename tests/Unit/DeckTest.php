@@ -52,4 +52,12 @@ class DeckTest extends \Tests\TestCase
         $this->assertCount(1, $taken);
         $this->assertCount(51, $deck->cards);
     }
+
+    public function testDone()
+    {
+        $deck = Deck::create();
+        $this->assertFalse($deck->done());
+        $deck->cards = [];
+        $this->assertTrue($deck->done());
+    }
 }

@@ -41,4 +41,13 @@ class GameController extends Controller
         $dealer->hitDealerOrStand();
         return redirect("/game/{$game->id}");
     }
+
+    public function stand($id)
+    {
+        $game = Game::findOrFail($id);
+        $dealer = App::makeWith(Dealer::class, ['game' => $game]);
+        $dealer->hitPlayer();
+        $dealer->hitDealerUntilStand();
+        return redirect("/game/{$game->id}");
+    }
 }

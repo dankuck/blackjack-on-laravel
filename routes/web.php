@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('game/{id}', 'GameController@show');
 Route::post('game', 'GameController@create');
 Route::post('game/{id}/hit', 'GameController@hit');
+Route::post('game/{id}/stand', 'GameController@stand');
 
 Route::get('dev/card-deck', function () {
     return view('dev.card-deck');
