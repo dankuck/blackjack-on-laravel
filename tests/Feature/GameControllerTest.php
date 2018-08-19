@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
 use App\Models\Game;
 
-class GameControllerTest extends TestCase
+class GameControllerTest extends \Tests\TestCase
 {
 
     public function testShowFresh()
@@ -12,12 +12,19 @@ class GameControllerTest extends TestCase
         $game = factory(Game::class)->create();
 
         $this->get("/game/{$game->id}")
-            ->see("there's a game here");
+            ->assertStatus(200)
+            ->assertViewHas('game');
     }
 
     public function testShowNoSuchGame()
     {
         $this->get("/game/BAD_ID")
-            ->see("there's no game here");
+            ->assertViewHas('game', null);
+    }
+
+    public function testCreate()
+    {
+        $this->post('/game')
+            ->assertRedirect();
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests;
+namespace Tests\Unit;
 
 use App\Models\Game;
 
-class GameTest extends TestCase
+class GameTest extends \Tests\TestCase
 {
     public function testExists()
     {

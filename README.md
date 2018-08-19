@@ -25,3 +25,4 @@ I chose to make the test files in a flat directory structure because that's easi
 
 In order to make this a good example of Laravel and not a good example of frontend frameworks, I chose to rely primarily on Blade templates with forms. Unfortunately this meant I couldn't exemplify RESTful approaches. I chose to make best use of HTTP verbs anyway.
 
+I chose not to implement any user-based auth stuff. E.g., anyone can access any game.
