@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Libs\Dealer;
 use App\Models\Game;
+use Illuminate\Support\Facades\App;
+use Mockery;
 
 class GameControllerTest extends \Tests\TestCase
 {
@@ -34,5 +37,19 @@ class GameControllerTest extends \Tests\TestCase
         $this->assertCount(2, $game->player_hand);
         $this->assertCount(2, $game->dealer_hand);
         $this->assertCount(48, $game->deck->cards);
+    }
+
+    public function testHit()
+    {
+        $dealer = Mockery::mock(Dealer::class);
+        $dealer->shouldReceive('hitPlayer')
+            ->once();
+        $dealer->shouldReceive('hitDealerOrStand')
+            ->once();
+        App::bind(Dealer::class, function () use ($dealer) { return $dealer; });
+
+        $game = factory(Game::class)->create();
+        $this->post("/game/{$game->id}/hit")
+            ->assertRedirect();
     }
 }
