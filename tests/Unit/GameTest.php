@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\Model\Games;
+use App\Models\Game;
 
 class GameTest extends TestCase
 {
