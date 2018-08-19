@@ -20,9 +20,9 @@
                     Blackjack on Laravel by Dan Kuck
                 </h1>
             </div>
-        </div>
-        <div id="app">
-            @yield('content')
+            <div id="app">
+                @yield('content')
+            </div>
         </div>
         <script src="{{ elixir('js/app.js') }}"></script>
     </body>
