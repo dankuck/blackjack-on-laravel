@@ -41,15 +41,16 @@ class GameControllerTest extends \Tests\TestCase
 
     public function testHit()
     {
-        $dealer = Mockery::mock(Dealer::class);
-        $dealer->shouldReceive('hitPlayer')
-            ->once();
-        $dealer->shouldReceive('hitDealerOrStand')
-            ->once();
-        App::bind(Dealer::class, function () use ($dealer) { return $dealer; });
-
         $game = factory(Game::class)->create();
+        $this->assertCount(0, $game->dealer_hand);
+        $this->assertCount(0, $game->player_hand);
+        $this->assertCount(52, $game->deck->cards);
         $this->post("/game/{$game->id}/hit")
             ->assertRedirect();
+            
+        $game = $game->fresh();
+        $this->assertCount(1, $game->dealer_hand);
+        $this->assertCount(1, $game->player_hand);
+        $this->assertCount(50, $game->deck->cards);
     }
 }
