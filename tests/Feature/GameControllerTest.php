@@ -11,7 +11,6 @@ class GameControllerTest extends \Tests\TestCase
     {
         $game = factory(Game::class)->create();
 
-        echo $this->get("/game/{$game->id}")->getContent();
         $this->get("/game/{$game->id}")
             ->assertStatus(200)
             ->assertViewHas('game');
@@ -20,7 +19,7 @@ class GameControllerTest extends \Tests\TestCase
     public function testShowNoSuchGame()
     {
         $this->get("/game/BAD_ID")
-            ->assertViewHas('game', null);
+            ->assertViewMissing('game');
     }
 
     public function testCreate()
