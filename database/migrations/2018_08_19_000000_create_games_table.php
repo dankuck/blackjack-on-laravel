@@ -17,6 +17,8 @@ class CreateGamesTable extends Migration
             $table->integer('id', true);
             $table->timestamps();
             $table->integer('deck_id');
+            $table->text('player_hand');
+            $table->text('dealer_hand');
         });
     }
 

@@ -3,7 +3,9 @@
 @section('content')
     game {{ $game }}
 
-    @for ($i = $game->deck->card_count; $i > 0; $i--)
-        <card card='BACK'></card>
-    @endfor
+    <div class="row">
+        @for ($i = $game->deck->card_count; $i > 0; $i--)
+            <card card='BACK'></card>
+        @endfor
+    </div>
 @endsection

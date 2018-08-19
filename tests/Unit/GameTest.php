@@ -14,8 +14,28 @@ class GameTest extends \Tests\TestCase
 
     public function testDeck()
     {
-        $deck = factory(Deck::class)->create();
-        $game = factory(Game::class)->create(['deck_id' => $deck->id]);
+        $deck = Deck::create();
+        $game = Game::create(['deck_id' => $deck->id]);
         $this->assertEquals($deck->id, $game->deck->id);
+    }
+
+    public function testPlayerHand()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertCount(0, $game->player_hand);
+
+        $game->player_hand = Deck::create()->cards;
+        $game->save();
+        $this->assertCount(52, $game->player_hand);
+    }
+
+    public function testDealerHand()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertCount(0, $game->dealer_hand);
+
+        $game->dealer_hand = Deck::create()->cards;
+        $game->save();
+        $this->assertCount(52, $game->dealer_hand);
     }
 }
