@@ -64,7 +64,7 @@ class GameControllerTest extends \Tests\TestCase
             ->assertRedirect();
             
         $game = $game->fresh();
-        $this->assertTrue($game->dealer_hand_value > 16);
+        $this->assertTrue($game->dealer_hand_values[0] > 16);
         $this->assertCount(0, $game->player_hand);
         $this->assertEquals(52, count($game->deck->cards) + count($game->dealer_hand));
     }
