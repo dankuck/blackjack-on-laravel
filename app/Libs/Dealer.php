@@ -18,4 +18,14 @@ class Dealer
     {
         $this->game->player_hand = collect($this->game->player_hand)->merge($this->game->deck->take());
     }
+
+    public function hitDealerOrStand()
+    {
+        $this->hitDealer();
+    }
+
+    private function hitDealer()
+    {
+        $this->game->dealer_hand = collect($this->game->dealer_hand)->merge($this->game->deck->take());
+    }
 }
