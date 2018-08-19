@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('start');
 });
+
+Route::get('game/{id}', 'GameController@show');
+Route::post('game', 'GameController@create');
