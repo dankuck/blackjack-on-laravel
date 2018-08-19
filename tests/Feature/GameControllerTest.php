@@ -26,5 +26,13 @@ class GameControllerTest extends \Tests\TestCase
     {
         $this->post('/game')
             ->assertRedirect();
+
+        $games = Game::all();
+        $this->assertCount(1, $games);
+        
+        $game = $games[0];
+        $this->assertCount(2, $game->player_hand);
+        $this->assertCount(2, $game->dealer_hand);
+        $this->assertCount(48, $game->deck->cards);
     }
 }

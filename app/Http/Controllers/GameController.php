@@ -24,6 +24,10 @@ class GameController extends Controller
     {
         $deck = Deck::create();
         $game = Game::create(['deck_id' => $deck->id]);
+        $game->player_hand = $deck->take(2);
+        $game->dealer_hand = $deck->take(2);
+        $game->save();
+        $deck->save();
         return redirect("/game/{$game->id}");
     }
 }

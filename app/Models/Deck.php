@@ -33,4 +33,12 @@ class Deck extends Model
     {
         return count($this->cards);
     }
+
+    public function take($n = 1)
+    {
+        $cards = collect($this->cards);
+        $taken = $cards->splice(0, $n);
+        $this->cards = $cards;
+        return $taken;
+    }
 }
