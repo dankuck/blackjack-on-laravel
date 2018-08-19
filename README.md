@@ -21,3 +21,7 @@ A blackjack game driven by Laravel
 
 I chose to use a SQLite server because it is portable and NoSQL alternatives are not representative of the most common Laravel usage.
 
+I chose to make the test files in a flat directory structure because that's easier to read and it would only cause a mess if someone wanted to continue developing this software.
+
+In order to make this a good example of Laravel and not a good example of frontend frameworks, I chose to rely primarily on Blade templates with forms. Unfortunately this meant I couldn't exemplify RESTful approaches. I chose to make best use of HTTP verbs anyway.
+
