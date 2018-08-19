@@ -38,4 +38,22 @@ class GameTest extends \Tests\TestCase
         $game->save();
         $this->assertCount(52, $game->dealer_hand);
     }
+
+    public function testDealerHandValues()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertEquals([0], $game->dealer_hand_values);
+
+        $game->dealer_hand = ['2H', 'QH', 'KH'];
+        $this->assertEquals([22], $game->dealer_hand_values);
+
+        $game->dealer_hand = ['AH'];
+        $this->assertEquals([1, 11], $game->dealer_hand_values);
+
+        $game->dealer_hand = ['AH', '2H'];
+        $this->assertEquals([1 + 2, 11 + 2], $game->dealer_hand_values);
+
+        $game->dealer_hand = ['AH', 'AH'];
+        $this->assertEquals([1 + 1, 1 + 11, 11 + 1, 11 + 11], $game->dealer_hand_values);
+    }
 }

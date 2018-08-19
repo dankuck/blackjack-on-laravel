@@ -30,6 +30,10 @@ class Card
         }
     }
 
+    /**
+     * Adds each value from this to each value in the array yielding
+     * an array count($this->values()) * count($values) long.
+     */
     public function addValues(array $values)
     {
         $result = [];

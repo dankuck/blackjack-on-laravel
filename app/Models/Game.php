@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Libs\Card;
 
 class Game extends Model
 {
@@ -28,5 +29,14 @@ class Game extends Model
     public function deck()
     {
         return $this->belongsTo(Deck::class);
+    }
+
+    public function getDealerHandValuesAttribute()
+    {
+        $values = [0];
+        foreach ($this->dealer_hand as $card) {
+            $values = (new Card($card))->addValues($values);
+        }
+        return $values;
     }
 }
