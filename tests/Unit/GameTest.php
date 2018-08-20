@@ -59,4 +59,25 @@ class GameTest extends \Tests\TestCase
         $game->player_hand = ['AH', 'AH'];
         $this->assertEquals(12, $game->player_hand_best_value);
     }
+
+    public function testDecideWinner()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertNull($game->winner);
+
+        $game->player_hand = ['AH', 'QH']; // 21
+        $game->dealer_hand = ['QH', 'QS']; // 20
+        $game->decideWinner();
+        $this->assertEquals(Game::PLAYER, $game->winner);
+
+        $game->player_hand = ['QH', 'QS']; // 20
+        $game->dealer_hand = ['AH', 'QH']; // 21
+        $game->decideWinner();
+        $this->assertEquals(Game::DEALER, $game->winner);
+
+        $game->player_hand = ['QH', 'AH']; // 21
+        $game->dealer_hand = ['AH', 'QH']; // 21
+        $game->decideWinner();
+        $this->assertEquals(Game::TIE, $game->winner);
+    }
 }

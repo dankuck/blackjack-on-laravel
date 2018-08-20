@@ -27,4 +27,7 @@ In order to make this a good example of Laravel and not a good example of fronte
 
 I chose not to implement any user-based auth stuff. E.g., anyone can access any game.
 
-I found a sprite map on the Internet of cards. It has unknown copyright status.
+I found a sprite map of cards on the Internet. It has unknown copyright status.
+
+I tried to show variety of implementation options. If I were to continue developing this, I can think of some data that I would refactor out from a JSON column into a first class Model.
+

@@ -19,6 +19,7 @@ class CreateGamesTable extends Migration
             $table->integer('deck_id');
             $table->text('player_hand');
             $table->text('dealer_hand');
+            $table->string('winner')->nullable();
         });
     }
 

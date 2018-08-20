@@ -47,5 +47,8 @@ class HandTest extends \Tests\TestCase
 
         $hand = new Hand(['AH', 'AH']);
         $this->assertEquals(1 + 11, $hand->bestValue());
+
+        $hand = new Hand(['AH', 'QH']);
+        $this->assertEquals(11 + 10, $hand->bestValue());
     }
 }
