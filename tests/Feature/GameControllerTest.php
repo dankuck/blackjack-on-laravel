@@ -68,4 +68,19 @@ class GameControllerTest extends \Tests\TestCase
         $this->assertCount(0, $game->player_hand);
         $this->assertEquals(52, count($game->deck->cards) + count($game->dealer_hand));
     }
+
+    public function testWinCondition()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertNull($game->winner);
+
+        $game->player_hand = ['AH', 'QH']; // 21
+        $game->dealer_hand = ['QH', 'QS']; // 20
+        $game->save();
+        $this->post("/game/{$game->id}/stand")
+            ->assertRedirect();
+
+        $game = $game->fresh();
+        $this->assertEquals(Game::PLAYER, $game->winner);
+    }
 }

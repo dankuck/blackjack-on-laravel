@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Libs\Card;
+use App\Libs\Hand;
 
 class Game extends Model
 {
+
+    const PLAYER = 'PLAYER';
+    const DEALER = 'DEALER';
+    const TIE    = 'TIE';
+
     protected $guarded = [
         'id',
         'created_at',
@@ -33,10 +38,28 @@ class Game extends Model
 
     public function getDealerHandValuesAttribute()
     {
-        $values = [0];
-        foreach ($this->dealer_hand as $card) {
-            $values = (new Card($card))->addValues($values);
+        return (new Hand($this->dealer_hand))->values();
+    }
+
+    public function getDealerHandBestValueAttribute()
+    {
+        return (new Hand($this->dealer_hand))->bestValue();
+    }
+
+    public function getPlayerHandBestValueAttribute()
+    {
+        return (new Hand($this->player_hand))->bestValue();
+    }
+
+    public function decideWinner()
+    {
+        if ($this->player_hand_best_value > $this->dealer_hand_best_value) {
+            $this->winner = self::PLAYER;
+        } else if ($this->player_hand_best_value < $this->dealer_hand_best_value) {
+            $this->winner = self::DEALER;
+        } else {
+            $this->winner = self::TIE;
         }
-        return $values;
+        $this->save();
     }
 }

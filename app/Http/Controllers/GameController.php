@@ -47,6 +47,7 @@ class GameController extends Controller
         $game = Game::findOrFail($id);
         $dealer = App::makeWith(Dealer::class, ['game' => $game]);
         $dealer->hitDealerUntilStand();
+        $game->decideWinner();
         return redirect("/game/{$game->id}");
     }
 }

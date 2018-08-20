@@ -2,7 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Events\LowDeck;
 use App\Models\Deck;
+use App\Models\Game;
+use Illuminate\Support\Facades\Event;
 
 class DeckTest extends \Tests\TestCase
 {
@@ -53,11 +56,40 @@ class DeckTest extends \Tests\TestCase
         $this->assertCount(51, $deck->cards);
     }
 
-    public function testDone()
+    public function testIsDone()
     {
         $deck = Deck::create();
-        $this->assertFalse($deck->done());
+        $this->assertFalse($deck->is_done);
         $deck->cards = [];
-        $this->assertTrue($deck->done());
+        $this->assertTrue($deck->is_done);
+
+        $not_enough = floor(Deck::SIZE * Deck::LOW_THRESHOLD);
+        $just_enough = $not_enough + 1;
+        $cards = Deck::create()->cards;
+
+        $deck = Deck::create(['cards' => array_slice($cards, 0, $not_enough)]);
+        $this->assertTrue($deck->is_done);
+
+        $deck = Deck::create(['cards' => array_slice($cards, 0, $just_enough)]);
+        $this->assertFalse($deck->is_done);
+    }
+
+    public function testFiresLowDeckEvent()
+    {
+        $deck = factory(Game::class)->create()->deck;
+
+        Event::listen(LowDeck::class, function ($event) use (&$caught_event) {
+            $caught_event = $event;
+        });
+
+        $deck->cards = [];
+        $deck->save();
+        $this->assertEquals($deck, $caught_event->deck);
+    }
+
+    public function testGame()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertEquals($game->id, $game->deck->game->id);
     }
 }
