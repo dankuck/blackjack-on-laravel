@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Libs\Card;
+use App\Libs\Hand;
 
 class Game extends Model
 {
@@ -33,10 +33,16 @@ class Game extends Model
 
     public function getDealerHandValuesAttribute()
     {
-        $values = [0];
-        foreach ($this->dealer_hand as $card) {
-            $values = (new Card($card))->addValues($values);
-        }
-        return $values;
+        return (new Hand($this->dealer_hand))->values();
+    }
+
+    public function getDealerHandBestValueAttribute()
+    {
+        return (new Hand($this->dealer_hand))->bestValue();
+    }
+
+    public function getPlayerHandBestValueAttribute()
+    {
+        return (new Hand($this->player_hand))->bestValue();
     }
 }
