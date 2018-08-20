@@ -5,10 +5,12 @@ A blackjack game driven by Laravel
 
  The game will have 1 standard deck of 52 cards.
  The game will have 4 controls:
+
   * New Game
   * Hit
   * Stand
   * Deal
+
  The game should continue until 60% of the cards have been used. Upon reaching that point the game will end. The game
  will keep track of how many hands were won and lost by the player.
 
@@ -16,6 +18,29 @@ A blackjack game driven by Laravel
  Once the player stands the dealer will play out his hand.
 
  The dealer must hit at 16 or lower. And must stand on 17 and above.
+
+# Installation
+
+To run the application:
+
+```bash
+git clone https://github.com/dankuck/blackjack-on-laravel.git
+cd blackjack-on-laravel
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate
+```
+
+You're all set, visit /.
+
+To run tests, follow these further instructions:
+
+```bash
+touch database/testing.sqlite
+phpunit
+```
 
 # Choices
 

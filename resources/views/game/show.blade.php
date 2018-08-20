@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('content')
-    game {{ $game }}
-
     <div class="row">
-        <div class="deck">
-            @for ($i = $game->deck->card_count; $i > 0; $i--)
-                <card card='BACK' style="position: absolute; left: {{ $i * 5 }}px;"></card>
-            @endfor
+        <div class="col-12">
+            <div class="deck">
+                @for ($i = $game->deck->card_count; $i > 0; $i--)
+                    <card card='BACK' style="position: absolute; left: {{ $i * 5 }}px;"></card>
+                @endfor
+            </div>
         </div>
     </div>
     @if ($game->winner)
@@ -60,6 +60,10 @@
                         <button type="submit" class="btn btn-primary">Stand</button>
                     </form>
                 @endif
+                <form class="inline" action="/game" method="POST">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-secondary">Start New Game</button>
+                </form>
             </div>
         </div>
     </div>
