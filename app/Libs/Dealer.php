@@ -50,4 +50,14 @@ class Dealer
             $this->hitDealer();
         }
     }
+
+    public function deal()
+    {
+        $this->game->update([
+            'player_hand' => $this->game->deck->take(2),
+            'dealer_hand' => $this->game->deck->take(2),
+            'winner'      => null,
+        ]);
+        $this->game->deck->save();
+    }
 }

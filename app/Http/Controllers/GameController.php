@@ -50,4 +50,12 @@ class GameController extends Controller
         $game->decideWinner();
         return redirect("/game/{$game->id}");
     }
+
+    public function deal($id)
+    {
+        $game = Game::findOrFail($id);
+        $dealer = App::makeWith(Dealer::class, ['game' => $game]);
+        $dealer->deal();
+        return redirect("/game/{$game->id}");
+    }
 }

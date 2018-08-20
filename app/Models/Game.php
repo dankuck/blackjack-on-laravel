@@ -26,8 +26,12 @@ class Game extends Model
     public static function boot()
     {
         self::creating(function (self $game) {
-            $game->player_hand = [];
-            $game->dealer_hand = [];
+            if (!$game->player_hand) {
+                $game->player_hand = [];
+            }
+            if (!$game->dealer_hand) {
+                $game->dealer_hand = [];
+            }
         });
     }
 

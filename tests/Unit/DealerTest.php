@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Libs\Dealer;
 use App\Models\Game;
+use App\Models\Deck;
 
 class DealerTest extends \Tests\TestCase
 {
@@ -139,5 +140,29 @@ class DealerTest extends \Tests\TestCase
         $dealer->hitDealerUntilStand();
         $this->assertCount(0, $game->dealer_hand);
         $this->assertCount(0, $game->deck->cards);
+    }
+
+    public function testDeal()
+    {
+        $deck = factory(Deck::class)->create();
+        $deck->take(10);
+        $deck->save();
+        $game = factory(Game::class)->create([
+            'winner'      => Game::PLAYER,
+            'dealer_hand' => ['AS', 'AS', 'AS'],
+            'player_hand' => ['AS', 'AS', 'AS', 'AS'],
+            'deck_id'     => $deck->id,
+        ]);
+        $this->assertCount(3, $game->dealer_hand);
+        $this->assertCount(4, $game->player_hand);
+        $this->assertCount(42, $game->deck->cards);
+        $this->assertEquals(Game::PLAYER, $game->winner);
+
+        $dealer = new Dealer($game);
+        $dealer->deal();
+        $this->assertCount(2, $game->dealer_hand);
+        $this->assertCount(2, $game->player_hand);
+        $this->assertCount(38, $game->deck->cards);
+        $this->assertNull($game->winner);
     }
 }
