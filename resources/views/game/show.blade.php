@@ -10,11 +10,22 @@
             @endfor
         </div>
     </div>
+    @if ($game->winner)
+        <h3 class="alert alert-primary" role="alert">
+            @if ($game->winner == 'PLAYER')
+                Player Wins!
+            @elseif ($game->winner == 'DEALER')
+                Dealer Wins
+            @elseif ($game->winner == 'TIE')
+                No winner
+            @endif
+        </h3>
+    @endif
     <div class="row">
         <div class="col-6">
             <h3>Dealer's Hand</h3>
             @foreach ($game->dealer_hand as $i => $card)
-                <card card="{{ $i == 0 ? $card : 'BACK' }}"></card>
+                <card card="{{ $i > 0 && !$game->winner ? 'BACK' : $card }}"></card>
             @endforeach
         </div>
         <div class="col-6">
@@ -25,14 +36,21 @@
                 @endforeach
             </div>
             <div>
-                <form class="inline" action="/game/{{ $game->id }}/hit" method="POST">
-                    {{ csrf_field() }}
-                    <button type="submit" class="btn btn-primary">Hit</button>
-                </form>
-                <form class="inline" action="/game/{{ $game->id }}/stand" method="POST">
-                    {{ csrf_field() }}
-                    <button type="submit" class="btn btn-primary">Stand</button>
-                </form>
+                @if ($game->winner)
+                    <form class="inline" action="/game/{{ $game->id }}/deal" method="POST">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-primary">Deal</button>
+                    </form>
+                @else
+                    <form class="inline" action="/game/{{ $game->id }}/hit" method="POST">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-primary">Hit</button>
+                    </form>
+                    <form class="inline" action="/game/{{ $game->id }}/stand" method="POST">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-primary">Stand</button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
@@ -41,7 +59,7 @@
 @section('style')
 .deck {
     position: relative;
-    min-height: 200px;
+    min-height: 150px;
 }
 
 form.inline {
