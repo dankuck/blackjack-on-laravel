@@ -26,10 +26,8 @@ class GameController extends Controller
     {
         $deck = Deck::create();
         $game = Game::create(['deck_id' => $deck->id]);
-        $game->player_hand = $deck->take(2);
-        $game->dealer_hand = $deck->take(2);
-        $game->save();
-        $deck->save();
+        $dealer = new Dealer($game);
+        $dealer->deal();
         return redirect("/game/{$game->id}");
     }
 
@@ -48,6 +46,14 @@ class GameController extends Controller
         $dealer = App::makeWith(Dealer::class, ['game' => $game]);
         $dealer->hitDealerUntilStand();
         $game->decideWinner();
+        return redirect("/game/{$game->id}");
+    }
+
+    public function deal($id)
+    {
+        $game = Game::findOrFail($id);
+        $dealer = App::makeWith(Dealer::class, ['game' => $game]);
+        $dealer->deal();
         return redirect("/game/{$game->id}");
     }
 }

@@ -26,8 +26,12 @@ class Game extends Model
     public static function boot()
     {
         self::creating(function (self $game) {
-            $game->player_hand = [];
-            $game->dealer_hand = [];
+            if (!$game->player_hand) {
+                $game->player_hand = [];
+            }
+            if (!$game->dealer_hand) {
+                $game->dealer_hand = [];
+            }
         });
     }
 
@@ -55,8 +59,10 @@ class Game extends Model
     {
         if ($this->player_hand_best_value > $this->dealer_hand_best_value) {
             $this->winner = self::PLAYER;
+            $this->player_wins++;
         } else if ($this->player_hand_best_value < $this->dealer_hand_best_value) {
             $this->winner = self::DEALER;
+            $this->dealer_wins++;
         } else {
             $this->winner = self::TIE;
         }
