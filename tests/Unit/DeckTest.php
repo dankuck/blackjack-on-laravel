@@ -2,7 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Events\LowDeck;
 use App\Models\Deck;
+use App\Models\Game;
+use Illuminate\Support\Facades\Event;
 
 class DeckTest extends \Tests\TestCase
 {
@@ -59,5 +62,24 @@ class DeckTest extends \Tests\TestCase
         $this->assertFalse($deck->done());
         $deck->cards = [];
         $this->assertTrue($deck->done());
+    }
+
+    public function testFiresLowDeckEvent()
+    {
+        $deck = factory(Game::class)->create()->deck;
+
+        Event::listen(LowDeck::class, function ($event) use (&$caught_event) {
+            $caught_event = $event;
+        });
+
+        $deck->cards = [];
+        $deck->save();
+        $this->assertEquals($deck, $caught_event->deck);
+    }
+
+    public function testGame()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertEquals($game->id, $game->deck->game->id);
     }
 }

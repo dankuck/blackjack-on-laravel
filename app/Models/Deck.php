@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
+use App\Events\LowDeck;
 
 class Deck extends Model
 {
+    const SIZE = 52;
+    const LOW_THRESHOLD = .4;
+
     protected $guarded = [
         'id',
         'created_at',
@@ -27,6 +32,12 @@ class Deck extends Model
             }
             $deck->cards = collect($cards)->shuffle();
         });
+
+        self::saved(function (self $deck) {
+            if ($deck->card_count <= self::SIZE * self::LOW_THRESHOLD) {
+                Event::fire(new LowDeck($deck));
+            }
+        });
     }
 
     public function getCardCountAttribute()
@@ -45,5 +56,10 @@ class Deck extends Model
     public function done()
     {
         return !$this->cards;
+    }
+
+    public function game()
+    {
+        return $this->hasOne(Game::class);
     }
 }

@@ -31,3 +31,5 @@ I found a sprite map of cards on the Internet. It has unknown copyright status.
 
 I tried to show variety of implementation options. If I were to continue developing this, I can think of some data that I would refactor out from a JSON column into a first class Model.
 
+I chose to handle the game-ending state as a first-class event so that it would show that system.
+
