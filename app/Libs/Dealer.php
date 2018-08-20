@@ -46,7 +46,7 @@ class Dealer
 
     public function hitDealerUntilStand()
     {
-        while (!$this->dealerShouldStand() && !$this->game->deck->done()) {
+        while (!$this->dealerShouldStand() && !$this->game->deck->is_done) {
             $this->hitDealer();
         }
     }

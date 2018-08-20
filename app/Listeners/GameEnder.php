@@ -8,6 +8,8 @@ class GameEnder
 {
     public function handle(LowDeck $event)
     {
-        $event->deck->game->decideWinner();
+        if ($event->deck->game) {
+            $event->deck->game->decideWinner();
+        }
     }
 }

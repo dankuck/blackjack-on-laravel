@@ -21,6 +21,11 @@
             @endif
         </h3>
     @endif
+    @if ($game->deck->is_done)
+        <h3 class="alert alert-secondary" role="alert">
+            The deck is too low. The game is over.
+        </h3>
+    @endif
     <div class="row">
         <div class="col-6">
             <h3>Dealer's Hand</h3>
@@ -41,7 +46,7 @@
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary">Deal</button>
                     </form>
-                @else
+                @elseif (!$game->deck->is_done)
                     <form class="inline" action="/game/{{ $game->id }}/hit" method="POST">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary">Hit</button>

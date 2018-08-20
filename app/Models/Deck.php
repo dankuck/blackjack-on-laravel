@@ -24,17 +24,19 @@ class Deck extends Model
     public static function boot()
     {
         self::creating(function (self $deck) {
-            $cards = [];
-            foreach (['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'] as $face) {
-                foreach (['S', 'C', 'H', 'D'] as $suit) {
-                    $cards[] = "{$face}{$suit}";
+            if (!$deck->cards) {
+                $cards = [];
+                foreach (['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'] as $face) {
+                    foreach (['S', 'C', 'H', 'D'] as $suit) {
+                        $cards[] = "{$face}{$suit}";
+                    }
                 }
+                $deck->cards = collect($cards)->shuffle();
             }
-            $deck->cards = collect($cards)->shuffle();
         });
 
         self::saved(function (self $deck) {
-            if ($deck->card_count <= self::SIZE * self::LOW_THRESHOLD) {
+            if ($deck->is_done) {
                 Event::fire(new LowDeck($deck));
             }
         });
@@ -53,9 +55,9 @@ class Deck extends Model
         return $taken;
     }
 
-    public function done()
+    public function getIsDoneAttribute()
     {
-        return !$this->cards;
+        return $this->card_count <= self::SIZE * self::LOW_THRESHOLD;
     }
 
     public function game()
