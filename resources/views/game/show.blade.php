@@ -23,7 +23,9 @@
     @endif
     @if ($game->deck->is_done)
         <h3 class="alert alert-secondary" role="alert">
-            The deck is too low. The game is over.
+            The game is over. 
+            Player won {{ $game->player_wins }} time{{ $game->player_wins == 1 ? '' : 's' }}.
+            Dealer won {{ $game->dealer_wins }} time{{ $game->dealer_wins == 1 ? '' : 's' }}.
         </h3>
     @endif
     <div class="row">
@@ -41,12 +43,14 @@
                 @endforeach
             </div>
             <div>
-                @if ($game->winner)
+                @if ($game->deck->is_done)
+                    <!-- No buttons -->
+                @elseif ($game->winner)
                     <form class="inline" action="/game/{{ $game->id }}/deal" method="POST">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary">Deal</button>
                     </form>
-                @elseif (!$game->deck->is_done)
+                @else
                     <form class="inline" action="/game/{{ $game->id }}/hit" method="POST">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary">Hit</button>

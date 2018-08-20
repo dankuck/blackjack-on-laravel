@@ -20,6 +20,8 @@ class CreateGamesTable extends Migration
             $table->text('player_hand');
             $table->text('dealer_hand');
             $table->string('winner')->nullable();
+            $table->integer('player_wins')->default(0);
+            $table->integer('dealer_wins')->default(0);
         });
     }
 

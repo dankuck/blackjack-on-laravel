@@ -83,6 +83,7 @@ class GameControllerTest extends \Tests\TestCase
 
         $game = $game->fresh();
         $this->assertEquals(Game::PLAYER, $game->winner);
+        $this->assertEquals(1, $game->player_wins);
     }
 
     public function testDeal()

@@ -69,15 +69,19 @@ class GameTest extends \Tests\TestCase
         $game->dealer_hand = ['QH', 'QS']; // 20
         $game->decideWinner();
         $this->assertEquals(Game::PLAYER, $game->winner);
+        $this->assertEquals(1, $game->player_wins);
 
         $game->player_hand = ['QH', 'QS']; // 20
         $game->dealer_hand = ['AH', 'QH']; // 21
         $game->decideWinner();
         $this->assertEquals(Game::DEALER, $game->winner);
+        $this->assertEquals(1, $game->dealer_wins);
 
         $game->player_hand = ['QH', 'AH']; // 21
         $game->dealer_hand = ['AH', 'QH']; // 21
         $game->decideWinner();
         $this->assertEquals(Game::TIE, $game->winner);
+        $this->assertEquals(1, $game->player_wins);
+        $this->assertEquals(1, $game->dealer_wins);
     }
 }
