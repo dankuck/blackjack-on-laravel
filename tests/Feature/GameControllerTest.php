@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Libs\Dealer;
 use App\Models\Game;
+use Illuminate\Support\Facades\App;
+use Mockery;
 
 class GameControllerTest extends \Tests\TestCase
 {
@@ -34,5 +37,35 @@ class GameControllerTest extends \Tests\TestCase
         $this->assertCount(2, $game->player_hand);
         $this->assertCount(2, $game->dealer_hand);
         $this->assertCount(48, $game->deck->cards);
+    }
+
+    public function testHit()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertCount(0, $game->dealer_hand);
+        $this->assertCount(0, $game->player_hand);
+        $this->assertCount(52, $game->deck->cards);
+        $this->post("/game/{$game->id}/hit")
+            ->assertRedirect();
+            
+        $game = $game->fresh();
+        $this->assertCount(1, $game->dealer_hand);
+        $this->assertCount(1, $game->player_hand);
+        $this->assertCount(50, $game->deck->cards);
+    }
+
+    public function testStand()
+    {
+        $game = factory(Game::class)->create();
+        $this->assertCount(0, $game->dealer_hand);
+        $this->assertCount(0, $game->player_hand);
+        $this->assertCount(52, $game->deck->cards);
+        $this->post("/game/{$game->id}/stand")
+            ->assertRedirect();
+            
+        $game = $game->fresh();
+        $this->assertTrue($game->dealer_hand_values[0] > 16);
+        $this->assertCount(0, $game->player_hand);
+        $this->assertEquals(52, count($game->deck->cards) + count($game->dealer_hand));
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use App\Models\Deck;
+use App\Libs\Dealer;
+use Illuminate\Support\Facades\App;
 
 class GameController extends Controller
 {
@@ -28,6 +30,23 @@ class GameController extends Controller
         $game->dealer_hand = $deck->take(2);
         $game->save();
         $deck->save();
+        return redirect("/game/{$game->id}");
+    }
+
+    public function hit($id)
+    {
+        $game = Game::findOrFail($id);
+        $dealer = App::makeWith(Dealer::class, ['game' => $game]);
+        $dealer->hitPlayer();
+        $dealer->hitDealerOrStand();
+        return redirect("/game/{$game->id}");
+    }
+
+    public function stand($id)
+    {
+        $game = Game::findOrFail($id);
+        $dealer = App::makeWith(Dealer::class, ['game' => $game]);
+        $dealer->hitDealerUntilStand();
         return redirect("/game/{$game->id}");
     }
 }

@@ -41,4 +41,9 @@ class Deck extends Model
         $this->cards = $cards;
         return $taken;
     }
+
+    public function done()
+    {
+        return !$this->cards;
+    }
 }
